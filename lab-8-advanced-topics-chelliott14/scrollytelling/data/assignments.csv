@@ -1,0 +1,13 @@
+name,partner,difficulty,time,assignment_type,complete
+Lab 1 HTML and JS,False,Easy,3,lab,True
+Lab 2 JS and Barcharts,False,Easy,4,lab,True
+Lab 3 D3,False,Difficult,6,lab,True
+Lab 4 Classes and Barcharts,False,Difficult,8,lab,True
+Lab 5 Transitions and Updating,False,Intermediate,5,lab,True
+Lab 6 Transitions and Family Tree,False,Intermediate,4.5,lab,True
+Lab 7 Linked Views,False,Difficult,7,lab, True
+Lab 8 Advanced Topics,False,Difficult,6,lab,False
+HW 1,True,Easy,5,homework,True
+HW 2,True,Easy,4,homework,True
+HW 3,True,Easy,3,homework,True
+Final Project,True,Difficult,12,final,False
