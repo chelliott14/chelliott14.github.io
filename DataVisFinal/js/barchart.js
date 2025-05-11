@@ -52,8 +52,7 @@ class Barchart {
     vis.svg2.append('text')
       .attr('class', 'axis-title')
       .attr('x', vis.config.margin.left)
-      .attr('y', 15)
-      .text('Salary-Tuition Disparity by University');
+      .attr('y', 15);
 
     // Overview (mini chart) and mover
     vis.xOverview = d3.scaleBand().range([0, vis.width]).padding(0.3);
@@ -69,6 +68,16 @@ class Barchart {
       .attr('height', vis.overviewHeight)
       .attr('cursor', 'ew-resize')
       .attr('fill', 'rgba(200, 200, 200, 0.5)');
+
+    vis.tooltip = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("position", "absolute")
+      .style("background", "#fff")
+      .style("padding", "8px")
+      .style("border", "1px solid #ccc")
+      .style("border-radius", "4px")
+      .style("pointer-events", "none")
+      .style("opacity", 0);
   }
 
   updateVis() {
@@ -179,6 +188,47 @@ class Barchart {
       .attr('height', d => Math.abs(vis.yScale(vis.yValue(d)) - vis.yScale(0)))
       .attr('width', Math.max(1, vis.xScale.bandwidth() - 2))
       .attr('fill', d => vis.config.colorScale(vis.colorValue(d)));
+      
+      vis.chart.selectAll('.bar')
+      .data(visibleData, d => d.name)
+      .join('rect')
+      .attr('class', 'bar')
+      .attr('x', d => vis.xScale(vis.xValue(d)))
+      .attr('y', d => vis.yScale(Math.max(0, vis.yValue(d))))
+      .attr('height', d => Math.abs(vis.yScale(vis.yValue(d)) - vis.yScale(0)))
+      .attr('width', Math.max(1, vis.xScale.bandwidth() - 2))
+      .attr('fill', d => vis.config.colorScale(vis.colorValue(d)))
+      .on('mouseover', function(event, d) {
+        d3.select(this).attr('stroke', 'black');
+        vis.tooltip
+          .style('opacity', 1)
+          .html(`
+            <strong>${d.name}</strong><br/>
+            Salary-Tuition Disparity: $${(vis.yValue(d)/1000).toFixed(1)}k
+          `);
+      })
+      .on('mousemove', function(event) {
+        vis.tooltip
+          .style('left', (event.pageX + 10) + 'px')
+          .style('top', (event.pageY - 28) + 'px');
+      })
+      .on('mouseleave', function() {
+        d3.select(this).attr('stroke', 'none');
+        vis.tooltip.style('opacity', 0);
+      });
+
+            // School selector
+      vis.chart.selectAll('.bar')
+        .on('click', (event, d) => {
+        // Check if already selected
+        const alreadySelected = selectedSchools.find(s => s.name === d.name);
+        if (!alreadySelected) {
+          selectedSchools.push(d);
+          highlightSelectedSchools();
+          renderSelectedSchools();
+        }
+      });
+    
 
     console.log('here')
 

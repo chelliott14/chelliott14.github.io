@@ -27,7 +27,8 @@ function applyFilters() {
   
     // Update yValue to reflect the selected tuition type
     scatterplot.yValue = d => selectedTuition === 'in_state_total' ? d.in_state_total : d.out_of_state_total;
-  
+    
+
     scatterplot.data = filteredData;
     scatterplot.updateVis();
 
@@ -53,6 +54,7 @@ function renderSelectedSchools() {
         <p>In-State Tuition: $${school.in_state_total}</p>
         <p>Out-of-State Tuition: $${school.out_of_state_total}</p>
         <p>Average Early Career Salary: $${school.early_career_pay}</p>
+        <p> (Salary - Tuition): $${scatterplot.xValue(school) - scatterplot.yValue(school)}</p>
         <p>${school.enrollment_bin}, ${school.type}</p>
       `);
   // Attach click event to the "×" button
@@ -73,6 +75,7 @@ function renderSelectedSchools() {
       .attr('stroke', d => selectedSchools.some(s => s.name === d.name) ? 'black' : 'none')
       .attr('stroke-width', d => selectedSchools.some(s => s.name === d.name) ? 2 : 0);
   }
+  
 
 const dispatcher = d3.dispatch('filterCategories');
 
